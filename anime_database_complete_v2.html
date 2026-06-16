@@ -1,0 +1,1991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Anime Power-Scaling Database v2.0</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #0f0f2e 100%);
+            color: #e0e0e0;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Animated Background Grid */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(0deg, transparent 24%, rgba(0, 255, 255, 0.05) 25%, rgba(0, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 255, 255, 0.05) 75%, rgba(0, 255, 255, 0.05) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(0, 255, 255, 0.05) 25%, rgba(0, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 255, 255, 0.05) 75%, rgba(0, 255, 255, 0.05) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+            animation: grid-move 20s linear infinite;
+        }
+
+        @keyframes grid-move {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50px); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(0, 20, 40, 0.8);
+            border-bottom: 2px solid #00ffff;
+            margin-bottom: 40px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+        }
+
+        h1 {
+            font-size: 3.5em;
+            background: linear-gradient(135deg, #00ffff, #ff00ff, #ff0080);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            margin-bottom: 10px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+        }
+
+        /* Search Bar */
+        .search-container {
+            margin: 30px 0;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .search-input {
+            padding: 12px 20px;
+            border: 2px solid #00ffff;
+            background: rgba(0, 20, 40, 0.9);
+            color: #00ffff;
+            border-radius: 8px;
+            font-size: 1em;
+            width: 300px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+            border-color: #ff00ff;
+        }
+
+        .search-input::placeholder {
+            color: rgba(0, 255, 255, 0.5);
+        }
+
+        /* Filter Buttons */
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid #ff00ff;
+            background: rgba(255, 0, 255, 0.1);
+            color: #ff00ff;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #ff00ff;
+            color: #000;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.6);
+        }
+
+        /* Character Grid */
+        .characters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .character-card {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border: 2px solid #00ffff;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+        }
+
+        .character-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translate(-100%, -100%) rotate(45deg); }
+            100% { transform: translate(100%, 100%) rotate(45deg); }
+        }
+
+        .character-card:hover {
+            transform: translateY(-10px);
+            border-color: #ff00ff;
+            box-shadow: 0 10px 40px rgba(255, 0, 255, 0.4);
+        }
+
+        .character-portrait {
+            width: 100%;
+            height: 250px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 2px solid #00ffff;
+            transition: transform 0.3s ease;
+        }
+
+        .character-card:hover .character-portrait {
+            transform: scale(1.05);
+        }
+
+        .character-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #00ffff;
+            margin-bottom: 5px;
+        }
+
+        .character-anime {
+            font-size: 0.9em;
+            color: #ff00ff;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .tier-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #ff0080, #ff00ff);
+            color: #fff;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+        }
+
+        .stats-container {
+            margin: 15px 0;
+        }
+
+        .stat-bar {
+            margin-bottom: 10px;
+            font-size: 0.85em;
+        }
+
+        .stat-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3px;
+            color: #00ffff;
+        }
+
+        .stat-fill {
+            width: 100%;
+            height: 6px;
+            background: rgba(0, 255, 255, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+            border: 1px solid #00ffff;
+        }
+
+        .stat-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #00ffff, #ff00ff);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .analyze-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #00ffff, #00ff88);
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.95em;
+            margin-top: 10px;
+        }
+
+        .analyze-btn:hover {
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
+            transform: scale(1.05);
+        }
+
+        /* Versus Mode */
+        .versus-section {
+            background: rgba(0, 20, 40, 0.8);
+            border: 2px solid #ff0080;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 40px 0;
+            box-shadow: 0 0 30px rgba(255, 0, 128, 0.3);
+        }
+
+        .versus-title {
+            font-size: 2em;
+            color: #ff0080;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .versus-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .versus-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .versus-selector {
+            position: relative;
+        }
+
+        .versus-label {
+            color: #00ffff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .searchable-dropdown {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #00ffff;
+            background: rgba(0, 20, 40, 0.9);
+            color: #00ffff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .searchable-dropdown:hover {
+            border-color: #ff00ff;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+        }
+
+        .fight-btn {
+            grid-column: 1 / -1;
+            padding: 15px;
+            background: linear-gradient(135deg, #ff0080, #ff00ff);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 0, 128, 0.4);
+        }
+
+        .fight-btn:hover {
+            box-shadow: 0 0 40px rgba(255, 0, 128, 0.8);
+            transform: scale(1.05);
+        }
+
+        .battle-result {
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .battle-result.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .battle-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .battle-table th,
+        .battle-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .battle-table th {
+            background: rgba(0, 255, 255, 0.2);
+            color: #00ffff;
+            font-weight: bold;
+        }
+
+        .battle-verdict {
+            color: #00ff88;
+            font-style: italic;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0, 255, 136, 0.1);
+            border-left: 4px solid #00ff88;
+            border-radius: 4px;
+        }
+
+        /* Tier List */
+        .tier-section {
+            background: rgba(0, 20, 40, 0.8);
+            border: 2px solid #00ff88;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 40px 0;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .tier-title {
+            font-size: 2em;
+            color: #00ff88;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .tier-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .tier-category {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid #00ff88;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .tier-category-title {
+            color: #00ff88;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            text-transform: uppercase;
+        }
+
+        .tier-item {
+            padding: 10px;
+            background: rgba(0, 255, 255, 0.1);
+            border-left: 3px solid #ff00ff;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            color: #e0e0e0;
+        }
+
+        .tier-rank {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(0, 20, 40, 0.95), rgba(10, 10, 30, 0.95));
+            border: 2px solid #00ffff;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-btn {
+            color: #00ffff;
+            float: right;
+            font-size: 2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #ff00ff;
+            transform: scale(1.2);
+        }
+
+        .modal-header {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+
+        .modal-portrait {
+            width: 200px;
+            height: 250px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 2px solid #00ffff;
+        }
+
+        .modal-title-section {
+            flex: 1;
+        }
+
+        .modal-title {
+            font-size: 2.5em;
+            color: #00ffff;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .modal-anime {
+            font-size: 1.1em;
+            color: #ff00ff;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .modal-info {
+            font-size: 0.95em;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        /* Tabs */
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid transparent;
+            color: #00ffff;
+            cursor: pointer;
+            border-radius: 6px 6px 0 0;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .tab-btn.active {
+            background: rgba(0, 255, 255, 0.3);
+            border-bottom-color: #00ffff;
+            color: #fff;
+            box-shadow: 0 -5px 15px rgba(0, 255, 255, 0.3);
+        }
+
+        .tab-btn:hover {
+            background: rgba(0, 255, 255, 0.2);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-card-label {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-size: 0.85em;
+        }
+
+        .stat-card-value {
+            color: #00ffff;
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .moves-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .move-card {
+            background: rgba(255, 0, 128, 0.1);
+            border: 2px solid #ff0080;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .move-card:hover {
+            background: rgba(255, 0, 128, 0.2);
+            box-shadow: 0 0 20px rgba(255, 0, 128, 0.4);
+        }
+
+        .move-name {
+            color: #ff0080;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .move-description {
+            color: #e0e0e0;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .power-display-image {
+            width: 100%;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 2px solid #ff0080;
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 600px) {
+            .pros-cons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .pros,
+        .cons {
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .cons {
+            border-color: #ff0080;
+            background: rgba(255, 0, 128, 0.1);
+        }
+
+        .pros-title,
+        .cons-title {
+            color: #00ffff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .cons-title {
+            color: #ff0080;
+        }
+
+        .pros-list,
+        .cons-list {
+            list-style: none;
+        }
+
+        .pros-list li,
+        .cons-list li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            color: #e0e0e0;
+        }
+
+        .pros-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        .cons-list li::before {
+            content: '✗';
+            position: absolute;
+            left: 0;
+            color: #ff0080;
+            font-weight: bold;
+        }
+
+        .power-system {
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .power-system-title {
+            color: #00ffff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .power-system-description {
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        /* Load More Button */
+        .load-more-container {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .load-more-btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #00ffff, #00ff88);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+        }
+
+        .load-more-btn:hover {
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.8);
+            transform: scale(1.05);
+        }
+
+        .load-more-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .characters-count {
+            text-align: center;
+            color: #00ffff;
+            margin: 20px 0;
+            font-size: 1.1em;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .characters-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+
+            .modal-header {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .modal-portrait {
+                width: 150px;
+                height: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .search-input {
+                width: 100%;
+            }
+
+            .characters-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .modal-content {
+                padding: 20px;
+                max-width: 95vw;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .modal-title {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>⚡ ULTIMATE ANIME POWER-SCALING DATABASE ⚡</h1>
+            <p class="subtitle">Discover the Strongest Anime Characters | Compare Stats | Battle Predictions</p>
+        </header>
+
+        <!-- Search & Filter -->
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search characters by name...">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All Anime</button>
+                <button class="filter-btn" data-filter="dragon-ball">Dragon Ball</button>
+                <button class="filter-btn" data-filter="naruto">Naruto</button>
+                <button class="filter-btn" data-filter="one-piece">One Piece</button>
+                <button class="filter-btn" data-filter="death-note">Death Note</button>
+                <button class="filter-btn" data-filter="jjk">Jujutsu Kaisen</button>
+            </div>
+        </div>
+
+        <!-- Characters Grid -->
+        <div class="characters-grid" id="charactersGrid"></div>
+        <div class="characters-count" id="charactersCount"></div>
+
+        <!-- Load More Button -->
+        <div class="load-more-container">
+            <button class="load-more-btn" id="loadMoreBtn">Load More Characters ↓</button>
+        </div>
+
+        <!-- Versus Mode -->
+        <div class="versus-section">
+            <h2 class="versus-title">⚔️ Versus Battle Mode ⚔️</h2>
+            <div class="versus-container">
+                <div class="versus-selector">
+                    <label class="versus-label">Select Fighter 1:</label>
+                    <select class="searchable-dropdown" id="fighter1">
+                        <option value="">Choose a character...</option>
+                    </select>
+                </div>
+                <div class="versus-selector">
+                    <label class="versus-label">Select Fighter 2:</label>
+                    <select class="searchable-dropdown" id="fighter2">
+                        <option value="">Choose a character...</option>
+                    </select>
+                </div>
+                <button class="fight-btn" id="fightBtn">FIGHT! ⚡</button>
+            </div>
+            <div class="battle-result" id="battleResult"></div>
+        </div>
+
+        <!-- Tier List -->
+        <div class="tier-section">
+            <h2 class="tier-title">🏆 Power Rankings 🏆</h2>
+            <div class="tier-list" id="tierList"></div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="characterModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <div class="modal-header">
+                <img id="modalPortrait" class="modal-portrait" src="" alt="">
+                <div class="modal-title-section">
+                    <h2 class="modal-title" id="modalName"></h2>
+                    <p class="modal-anime" id="modalAnime"></p>
+                    <div class="modal-info" id="modalBasicInfo"></div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="overview">Overview & Stats</button>
+                <button class="tab-btn" data-tab="combat">Combat & Moves</button>
+                <button class="tab-btn" data-tab="lore">Lore & Strategy</button>
+            </div>
+
+            <!-- Tab 1: Overview & Stats -->
+            <div class="tab-content active" id="overview">
+                <div class="stats-grid" id="statsGrid"></div>
+            </div>
+
+            <!-- Tab 2: Combat & Moves -->
+            <div class="tab-content" id="combat">
+                <h3 style="color: #ff0080; margin-bottom: 15px; text-transform: uppercase;">Signature Moves</h3>
+                <div class="moves-gallery" id="movesGallery"></div>
+                <h3 style="color: #ff0080; margin-top: 20px; margin-bottom: 15px; text-transform: uppercase;">Ultimate Power Display</h3>
+                <img id="powerDisplay" class="power-display-image" src="" alt="">
+            </div>
+
+            <!-- Tab 3: Lore & Strategy -->
+            <div class="tab-content" id="lore">
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h4 class="pros-title">Strengths</h4>
+                        <ul class="pros-list" id="prosList"></ul>
+                    </div>
+                    <div class="cons">
+                        <h4 class="cons-title">Limitations</h4>
+                        <ul class="cons-list" id="consList"></ul>
+                    </div>
+                </div>
+                <div class="power-system">
+                    <h4 class="power-system-title">Power System</h4>
+                    <p class="power-system-description" id="powerSystemDesc"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Character Database
+        const characters = [
+            {
+                id: 1,
+                name: 'Goku',
+                anime: 'Dragon Ball',
+                animeFilter: 'dragon-ball',
+                tier: 'S-Tier',
+                age: 49,
+                alias: 'Son Goku, Kakarot',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/goku_portrait-UKY7FSCE96D9v3pkJZC6HS.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/goku_kamehameha_attack-H5Fabae4eaaWQ6XqGtgUbr.webp',
+                stats: { power: 98, speed: 95, intelligence: 75, durability: 90, technique: 92, experience: 98 },
+                moves: [
+                    { name: 'Kamehameha', desc: 'Legendary energy blast technique' },
+                    { name: 'Ultra Instinct', desc: 'Transcendent state beyond mortal limits' },
+                    { name: 'Spirit Bomb', desc: 'Gathers energy from all living beings' }
+                ],
+                strengths: ['Unmatched combat instinct', 'Rapid power growth', 'Multiple transformations', 'Mastery of ki control'],
+                weaknesses: ['Overconfidence in battle', 'Heart condition', 'Loves fighting too much'],
+                powerSystem: 'Ki-based combat system with transformations (Super Saiyan, Ultra Instinct, etc.). Goku can sense and manipulate energy to create devastating attacks.',
+                battleVerdicts: {
+                    'Vegeta': 'Goku wins - Superior technique and experience',
+                    'Saitama': 'Goku wins - Greater versatility and power scaling',
+                    'Naruto': 'Goku wins - Higher destructive capability',
+                    'Luffy': 'Goku wins - Speed and power advantage'
+                }
+            },
+            {
+                id: 2,
+                name: 'Vegeta',
+                anime: 'Dragon Ball',
+                animeFilter: 'dragon-ball',
+                tier: 'S-Tier',
+                age: 48,
+                alias: 'Prince Vegeta, Saiyan Prince',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/vegeta_portrait-NPeGfAWczgMWvaDfRncKPJ.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/vegeta_galick_gun_attack-HKqy93WKnbWaGMhr2QVKb6.webp',
+                stats: { power: 96, speed: 93, intelligence: 88, durability: 92, technique: 90, experience: 95 },
+                moves: [
+                    { name: 'Galick Gun', desc: 'Purple energy beam attack' },
+                    { name: 'Final Flash', desc: 'Devastating finishing technique' },
+                    { name: 'Big Bang Attack', desc: 'Explosive sphere of energy' }
+                ],
+                strengths: ['Royal Saiyan heritage', 'Strategic mind', 'Multiple transformations', 'Rapid adaptation'],
+                weaknesses: ['Pride-driven decisions', 'Underestimates opponents', 'Emotional instability'],
+                powerSystem: 'Saiyan warrior with royal bloodline. Vegeta uses advanced ki manipulation and transformations to achieve god-level power.',
+                battleVerdicts: {
+                    'Goku': 'Goku wins - Slightly superior experience',
+                    'Saitama': 'Vegeta wins - Power scaling advantage',
+                    'Naruto': 'Vegeta wins - Greater destructive force'
+                }
+            },
+            {
+                id: 3,
+                name: 'Pikachu',
+                anime: 'Pokemon',
+                animeFilter: 'pokemon',
+                tier: 'A-Tier',
+                age: 25,
+                alias: 'Electric Mouse Pokemon',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/pikachu_portrait-GR8LEwnMqLymHGHS3ygpKE.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/pikachu_thunderbolt_attack-SR6uBf4WZdZ9tPj3e8Fn3u.webp',
+                stats: { power: 85, speed: 90, intelligence: 70, durability: 75, technique: 88, experience: 92 },
+                moves: [
+                    { name: 'Thunderbolt', desc: 'Powerful electric attack' },
+                    { name: 'Quick Attack', desc: 'Swift physical strike' },
+                    { name: 'Volt Tackle', desc: 'Devastating charge attack' }
+                ],
+                strengths: ['Electric affinity', 'Speed and agility', 'Bond with trainer', 'Adaptability'],
+                weaknesses: ['Limited physical durability', 'Type disadvantages', 'Energy depletion'],
+                powerSystem: 'Pokemon with electric-type abilities. Pikachu channels electricity through its body for powerful attacks.',
+                battleVerdicts: {
+                    'Ash': 'Pikachu wins - Superior power',
+                    'Goku': 'Goku wins - Overwhelming power difference'
+                }
+            },
+            {
+                id: 4,
+                name: 'Ash Ketchum',
+                anime: 'Pokemon',
+                animeFilter: 'pokemon',
+                tier: 'B-Tier',
+                age: 10,
+                alias: 'Pokemon Master in Training',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/ash_ketchum_portrait-KFwmPJVc9hK28up6PMatH6.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/ash_pokemon_battle_attack-DXExxhXvmQJXDLGfyscDLR.webp',
+                stats: { power: 60, speed: 70, intelligence: 75, durability: 65, technique: 72, experience: 80 },
+                moves: [
+                    { name: 'Pokemon Command', desc: 'Strategic battle tactics' },
+                    { name: 'Bond Power', desc: 'Synergy with Pokemon' },
+                    { name: 'Team Strategy', desc: 'Coordinated team attacks' }
+                ],
+                strengths: ['Pokemon training expertise', 'Strategic thinking', 'Determination', 'Team coordination'],
+                weaknesses: ['Limited personal combat ability', 'Inexperience', 'Emotional decisions'],
+                powerSystem: 'Trainer who commands Pokemon. Ash relies on his Pokemon team and strategic knowledge to win battles.',
+                battleVerdicts: {}
+            },
+            {
+                id: 5,
+                name: 'Sailor Moon',
+                anime: 'Sailor Moon',
+                animeFilter: 'other',
+                tier: 'A-Tier',
+                age: 14,
+                alias: 'Usagi Tsukino, Moon Princess',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/sailor_moon_portrait-6WxqQo62rBe9fTEwGjEZyn.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/sailor_moon_tiara_attack-ZnAmUZmBDhJc7jpJiXgQDY.webp',
+                stats: { power: 82, speed: 80, intelligence: 78, durability: 85, technique: 88, experience: 85 },
+                moves: [
+                    { name: 'Moon Tiara Action', desc: 'Magical projectile attack' },
+                    { name: 'Moon Healing Escalation', desc: 'Healing and restoration' },
+                    { name: 'Silver Moon Crystal Power', desc: 'Ultimate transformation' }
+                ],
+                strengths: ['Magical powers', 'Healing abilities', 'Leadership', 'Cosmic energy'],
+                weaknesses: ['Reluctant warrior', 'Emotional vulnerability', 'Limited experience'],
+                powerSystem: 'Magical girl with lunar powers. Sailor Moon channels cosmic energy through magical artifacts.',
+                battleVerdicts: {}
+            },
+            {
+                id: 6,
+                name: 'Ichigo Kurosaki',
+                anime: 'Bleach',
+                animeFilter: 'other',
+                tier: 'S-Tier',
+                age: 17,
+                alias: 'Substitute Shinigami, Soul Reaper',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/ichigo_portrait-C6sQGTvtKmaUaywsctcL5B.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/ichigo_getsuga_tensho_attack-hwKWgjPeXjQJWyFCVJ4D3k.webp',
+                stats: { power: 94, speed: 92, intelligence: 80, durability: 88, technique: 91, experience: 87 },
+                moves: [
+                    { name: 'Getsuga Tensho', desc: 'Crescent moon energy slash' },
+                    { name: 'Bankai', desc: 'Ultimate Shinigami transformation' },
+                    { name: 'Hollow Transformation', desc: 'Hollow power fusion' }
+                ],
+                strengths: ['Dual power sources', 'Rapid growth', 'Hollow abilities', 'Zanpakuto mastery'],
+                weaknesses: ['Hollow control issues', 'Emotional instability', 'Overreliance on power'],
+                powerSystem: 'Soul Reaper with Hollow powers. Ichigo wields a Zanpakuto and channels spiritual energy.',
+                battleVerdicts: {
+                    'Goku': 'Goku wins - Superior speed and power',
+                    'Naruto': 'Ichigo wins - Greater destructive capability'
+                }
+            },
+            {
+                id: 7,
+                name: 'Edward Elric',
+                anime: 'Fullmetal Alchemist',
+                animeFilter: 'other',
+                tier: 'A-Tier',
+                age: 16,
+                alias: 'Fullmetal Alchemist, Elric Brother',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/edward_elric_portrait-KBu2yXFBocbcVt6csF5CqM.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/edward_alchemy_attack-Y4CYbW8XbUoJy9ZszyHBhG.webp',
+                stats: { power: 80, speed: 85, intelligence: 95, durability: 75, technique: 92, experience: 88 },
+                moves: [
+                    { name: 'Transmutation', desc: 'Matter manipulation through alchemy' },
+                    { name: 'Automail Combat', desc: 'Mechanical arm techniques' },
+                    { name: 'Philosopher\'s Stone', desc: 'Ultimate alchemical power' }
+                ],
+                strengths: ['Alchemy mastery', 'Intellect', 'Automail combat', 'Problem-solving'],
+                weaknesses: ['Physical limitations', 'Emotional trauma', 'Automail dependency'],
+                powerSystem: 'Alchemist who manipulates matter through transmutation circles. Edward uses equivalent exchange principles.',
+                battleVerdicts: {}
+            },
+            {
+                id: 8,
+                name: 'Alphonse Elric',
+                anime: 'Fullmetal Alchemist',
+                animeFilter: 'other',
+                tier: 'A-Tier',
+                age: 14,
+                alias: 'Armor Alchemist, Elric Brother',
+                status: 'Alive (Soul in armor)',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/alphonse_elric_portrait-7igpbkAP4KLrobPqd9fZ5L.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/alphonse_armor_attack-6tubSvBdtWhapMzZMCmUxj.webp',
+                stats: { power: 85, speed: 80, intelligence: 92, durability: 98, technique: 88, experience: 85 },
+                moves: [
+                    { name: 'Armor Strength', desc: 'Enhanced physical power' },
+                    { name: 'Transmutation', desc: 'Alchemical manipulation' },
+                    { name: 'Soul Resonance', desc: 'Spiritual power amplification' }
+                ],
+                strengths: ['Armor durability', 'Spiritual power', 'Alchemy knowledge', 'Compassion'],
+                weaknesses: ['Soul instability', 'Armor limitations', 'Emotional vulnerability'],
+                powerSystem: 'Soul bound in armor. Alphonse uses alchemy and spiritual energy to combat threats.',
+                battleVerdicts: {}
+            },
+            {
+                id: 9,
+                name: 'Saitama',
+                anime: 'One Punch Man',
+                animeFilter: 'other',
+                tier: 'S-Tier',
+                age: 25,
+                alias: 'One Punch Man, Caped Baldy',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/saitama_portrait-ND44sDcbvbGju2e2CnZJna.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/saitama_serious_punch_attack-WhbRcgSoTQHiu5F4heTKjr.webp',
+                stats: { power: 100, speed: 96, intelligence: 70, durability: 99, technique: 75, experience: 85 },
+                moves: [
+                    { name: 'One Punch', desc: 'Defeats any opponent in one hit' },
+                    { name: 'Serious Punch', desc: 'Devastating full-power strike' },
+                    { name: 'Normal Punch', desc: 'Casual overwhelming attack' }
+                ],
+                strengths: ['Unmatched strength', 'Invulnerability', 'Boredom immunity', 'Simplicity'],
+                weaknesses: ['Boredom', 'Lack of challenge', 'Emotional detachment'],
+                powerSystem: 'Achieved limitless power through intense training. Saitama can defeat any opponent with minimal effort.',
+                battleVerdicts: {
+                    'Goku': 'Saitama wins - Unlimited power',
+                    'Vegeta': 'Saitama wins - Overwhelming strength'
+                }
+            },
+            {
+                id: 10,
+                name: 'Spike Spiegel',
+                anime: 'Cowboy Bebop',
+                animeFilter: 'other',
+                tier: 'B-Tier',
+                age: 27,
+                alias: 'Cowboy, Bounty Hunter',
+                status: 'Deceased',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/spike_spiegel_portrait-WGaYbaPqr9hfAKFcEiMSt6.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/spike_gun_battle_attack-jHXGUM4DexwTQ6CFbfFUcK.webp',
+                stats: { power: 75, speed: 88, intelligence: 85, durability: 70, technique: 90, experience: 92 },
+                moves: [
+                    { name: 'Gun Mastery', desc: 'Expert marksmanship' },
+                    { name: 'Hand-to-hand Combat', desc: 'Martial arts expertise' },
+                    { name: 'Tactical Strategy', desc: 'Combat planning' }
+                ],
+                strengths: ['Combat expertise', 'Tactical mind', 'Charm', 'Adaptability'],
+                weaknesses: ['Mortality', 'Emotional baggage', 'Recklessness'],
+                powerSystem: 'Skilled bounty hunter using guns and martial arts. Spike relies on experience and tactical knowledge.',
+                battleVerdicts: {}
+            },
+            {
+                id: 11,
+                name: 'Faye Valentine',
+                anime: 'Cowboy Bebop',
+                animeFilter: 'other',
+                tier: 'B-Tier',
+                age: 77,
+                alias: 'Bounty Hunter, Femme Fatale',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/faye_valentine_portrait-fREYWQz7QbwpEcqffCXb6K.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/faye_combat_attack-4SVXU57WrELhEYmZ83ZzMP.webp',
+                stats: { power: 70, speed: 82, intelligence: 80, durability: 68, technique: 85, experience: 85 },
+                moves: [
+                    { name: 'Gun Combat', desc: 'Firearm expertise' },
+                    { name: 'Deception', desc: 'Cunning tactics' },
+                    { name: 'Seduction', desc: 'Manipulation ability' }
+                ],
+                strengths: ['Combat skills', 'Intelligence', 'Charm', 'Cunning'],
+                weaknesses: ['Gambling addiction', 'Debt problems', 'Emotional vulnerability'],
+                powerSystem: 'Skilled bounty hunter using guns and wits. Faye combines combat prowess with cunning strategy.',
+                battleVerdicts: {}
+            },
+            {
+                id: 12,
+                name: 'Levi Ackerman',
+                anime: 'Attack on Titan',
+                animeFilter: 'other',
+                tier: 'S-Tier',
+                age: 34,
+                alias: 'Humanity\'s Strongest Soldier',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/levi_ackerman_portrait-9Vj3S9cKNyjC6bDLhwVBHJ.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/levi_blade_attack-H6dfrFLML4w9Tw2DjtkJMF.webp',
+                stats: { power: 88, speed: 96, intelligence: 85, durability: 82, technique: 98, experience: 98 },
+                moves: [
+                    { name: 'ODM Gear Mastery', desc: 'Three-dimensional maneuver mastery' },
+                    { name: 'Blade Techniques', desc: 'Precision sword combat' },
+                    { name: 'Titan Slaying', desc: 'Specialized giant-killing' }
+                ],
+                strengths: ['Combat mastery', 'Speed', 'Precision', 'Experience', 'Leadership'],
+                weaknesses: ['Humanity', 'Emotional trauma', 'Limited power scaling'],
+                powerSystem: 'Human soldier using ODM gear and blades. Levi achieves superhuman feats through skill and training.',
+                battleVerdicts: {
+                    'Eren': 'Levi wins - Superior combat skill'
+                }
+            },
+            {
+                id: 13,
+                name: 'Mikasa Ackerman',
+                anime: 'Attack on Titan',
+                animeFilter: 'other',
+                tier: 'A-Tier',
+                age: 19,
+                alias: 'Ackerman, Survey Corps Member',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/mikasa_ackerman_portrait-jaQ9dRxkAMdt5R8opS5xQ3.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/mikasa_sword_attack-DiaUgFCo5bgrsQvbQpXhky.webp',
+                stats: { power: 82, speed: 90, intelligence: 80, durability: 80, technique: 92, experience: 88 },
+                moves: [
+                    { name: 'Sword Mastery', desc: 'Expert blade combat' },
+                    { name: 'ODM Gear Combat', desc: 'Three-dimensional maneuver' },
+                    { name: 'Ackerman Power', desc: 'Inherited superhuman abilities' }
+                ],
+                strengths: ['Combat skill', 'Ackerman heritage', 'Loyalty', 'Speed'],
+                weaknesses: ['Emotional attachment', 'Humanity limits', 'Obsession'],
+                powerSystem: 'Ackerman clan member with inherited superhuman abilities. Mikasa uses blades and ODM gear.',
+                battleVerdicts: {}
+            },
+            {
+                id: 14,
+                name: 'Armin Arlert',
+                anime: 'Attack on Titan',
+                animeFilter: 'other',
+                tier: 'A-Tier',
+                age: 19,
+                alias: 'Colossal Titan, Survey Corps Member',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/armin_arlert_portrait-9pMyHGQnVGwp2vDE9mP8RD.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/armin_colossal_titan_attack-RvEdx3HGRUSChkEwEKRK7.webp',
+                stats: { power: 90, speed: 70, intelligence: 95, durability: 92, technique: 80, experience: 85 },
+                moves: [
+                    { name: 'Colossal Titan Transformation', desc: 'Giant form with steam power' },
+                    { name: 'Strategic Planning', desc: 'Tactical genius' },
+                    { name: 'Explosive Power', desc: 'Steam-based attacks' }
+                ],
+                strengths: ['Titan power', 'Intelligence', 'Strategy', 'Destructive capability'],
+                weaknesses: ['Humanity limits', 'Emotional sensitivity', 'Transformation cooldown'],
+                powerSystem: 'Colossal Titan shifter with strategic mind. Armin transforms into a giant steam-powered titan.',
+                battleVerdicts: {}
+            },
+            {
+                id: 15,
+                name: 'Light Yagami',
+                anime: 'Death Note',
+                animeFilter: 'death-note',
+                tier: 'S-Tier',
+                age: 17,
+                alias: 'Kira, God of the New World',
+                status: 'Deceased',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/light_yagami_portrait-BsjBmqR4FBHxXfgzdYbovM.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/light_death_note_attack-L8zdUiCSFJSV3TYg4RUz7q.webp',
+                stats: { power: 85, speed: 75, intelligence: 98, durability: 70, technique: 95, experience: 90 },
+                moves: [
+                    { name: 'Death Note', desc: 'Kill anyone by writing their name' },
+                    { name: 'Strategic Manipulation', desc: 'Complex planning' },
+                    { name: 'Deception', desc: 'Master of lies' }
+                ],
+                strengths: ['Genius intellect', 'Death Note power', 'Manipulation', 'Strategic mind'],
+                weaknesses: ['Mortality', 'God complex', 'Emotional instability', 'Arrogance'],
+                powerSystem: 'Possesses Death Note - a supernatural notebook that kills anyone whose name is written in it.',
+                battleVerdicts: {
+                    'L': 'Light wins - Death Note advantage',
+                    'Goku': 'Light wins - Death Note kills instantly'
+                }
+            },
+            {
+                id: 16,
+                name: 'L',
+                anime: 'Death Note',
+                animeFilter: 'death-note',
+                tier: 'S-Tier',
+                age: 25,
+                alias: 'L Lawliet, World\'s Greatest Detective',
+                status: 'Deceased',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/near_portrait-UVPChWHg4HgPiN8GztYvXX.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/near_strategy_attack-bwwyP9HZABqJ8daaGgP68a.webp',
+                stats: { power: 50, speed: 60, intelligence: 99, durability: 55, technique: 90, experience: 95 },
+                moves: [
+                    { name: 'Deduction', desc: 'Supernatural detective skills' },
+                    { name: 'Strategy', desc: 'Complex planning' },
+                    { name: 'Manipulation', desc: 'Psychological tactics' }
+                ],
+                strengths: ['Genius intellect', 'Deduction', 'Strategy', 'Psychological warfare'],
+                weaknesses: ['Physical fragility', 'Humanity', 'Emotional detachment', 'Arrogance'],
+                powerSystem: 'World\'s greatest detective using pure intellect and deduction. L relies on psychological manipulation.',
+                battleVerdicts: {
+                    'Light': 'Light wins - Death Note advantage',
+                    'Near': 'Near wins - Superior strategy'
+                }
+            },
+            {
+                id: 17,
+                name: 'Near',
+                anime: 'Death Note',
+                animeFilter: 'death-note',
+                tier: 'S-Tier',
+                age: 13,
+                alias: 'N, L\'s Successor',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/near_portrait-UVPChWHg4HgPiN8GztYvXX.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/near_strategy_attack-bwwyP9HZABqJ8daaGgP68a.webp',
+                stats: { power: 45, speed: 55, intelligence: 98, durability: 50, technique: 88, experience: 85 },
+                moves: [
+                    { name: 'Deduction', desc: 'Advanced detective skills' },
+                    { name: 'Strategy', desc: 'Brilliant planning' },
+                    { name: 'Toys', desc: 'Puzzle and game mastery' }
+                ],
+                strengths: ['Genius intellect', 'Strategy', 'Deduction', 'Patience'],
+                weaknesses: ['Physical fragility', 'Childhood', 'Humanity', 'Emotional coldness'],
+                powerSystem: 'Brilliant child detective using intellect and strategy. Near surpasses L in deductive ability.',
+                battleVerdicts: {
+                    'Light': 'Near wins - Superior strategy',
+                    'L': 'Near wins - Slightly better intellect'
+                }
+            },
+            {
+                id: 18,
+                name: 'Mello',
+                anime: 'Death Note',
+                animeFilter: 'death-note',
+                tier: 'A-Tier',
+                age: 13,
+                alias: 'Mihael Keehl, L\'s Successor',
+                status: 'Deceased',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/mello_portrait-R9Sgz7iXQwPz23SdXJu.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/mello_explosive_attack-nEVuqJSSSKKzoVnR4NhQMk.webp',
+                stats: { power: 70, speed: 75, intelligence: 95, durability: 65, technique: 85, experience: 80 },
+                moves: [
+                    { name: 'Explosives', desc: 'Bomb expertise' },
+                    { name: 'Deduction', desc: 'Detective skills' },
+                    { name: 'Combat', desc: 'Physical fighting' }
+                ],
+                strengths: ['Intelligence', 'Combat ability', 'Explosives', 'Determination'],
+                weaknesses: ['Impulsiveness', 'Emotions', 'Humanity', 'Mortality'],
+                powerSystem: 'Brilliant detective with combat skills and explosives expertise. Mello uses action and intellect.',
+                battleVerdicts: {}
+            },
+            {
+                id: 19,
+                name: 'Killua Zoldyck',
+                anime: 'Hunter x Hunter',
+                animeFilter: 'other',
+                tier: 'S-Tier',
+                age: 12,
+                alias: 'Assassin, Zoldyck Family Member',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/killua_zoldyck_portrait-8R5NjkPsgMGbai3ybBgNCK.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/killua_lightning_attack-Xj3Du4xfdwFdZ6miuXantM.webp',
+                stats: { power: 88, speed: 98, intelligence: 85, durability: 85, technique: 92, experience: 88 },
+                moves: [
+                    { name: 'Godspeed', desc: 'Lightning-fast movement' },
+                    { name: 'Transmutation', desc: 'Nen electricity' },
+                    { name: 'Assassination Techniques', desc: 'Lethal combat skills' }
+                ],
+                strengths: ['Speed mastery', 'Nen control', 'Assassination training', 'Adaptability'],
+                weaknesses: ['Childhood trauma', 'Emotional vulnerability', 'Humanity'],
+                powerSystem: 'Assassin trained from birth. Killua uses Nen to create lightning and achieve superhuman speed.',
+                battleVerdicts: {
+                    'Gon': 'Killua wins - Superior speed and training'
+                }
+            },
+            {
+                id: 20,
+                name: 'Gon Freecss',
+                anime: 'Hunter x Hunter',
+                animeFilter: 'other',
+                tier: 'A-Tier',
+                age: 12,
+                alias: 'Hunter, Freecss Family Member',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/gon_freecss_portrait-U9gkoBtppq8zHmFeYbaSqW.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/gon_beast_attack-eqnAx9XePAmNTR5CTPib8c.webp',
+                stats: { power: 85, speed: 85, intelligence: 75, durability: 80, technique: 82, experience: 80 },
+                moves: [
+                    { name: 'Beast Transformation', desc: 'Adult form power' },
+                    { name: 'Nen Mastery', desc: 'Aura manipulation' },
+                    { name: 'Rock Paper Scissors', desc: 'Nen technique' }
+                ],
+                strengths: ['Nen potential', 'Determination', 'Growth ability', 'Combat instinct'],
+                weaknesses: ['Impulsiveness', 'Naivety', 'Humanity', 'Emotional decisions'],
+                powerSystem: 'Hunter with Nen abilities. Gon channels aura for powerful attacks and transformations.',
+                battleVerdicts: {
+                    'Killua': 'Killua wins - Superior speed'
+                }
+            },
+            {
+                id: 21,
+                name: 'Hisoka Morow',
+                anime: 'Hunter x Hunter',
+                animeFilter: 'other',
+                tier: 'S-Tier',
+                age: 28,
+                alias: 'Magician, Phantom Troupe Member',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/hisoka_morow_portrait-7ts8pTC5dBtm775jnRKGje.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/hisoka_card_attack-BftUVE22b6LrZ723qNjqYj.webp',
+                stats: { power: 92, speed: 90, intelligence: 88, durability: 85, technique: 95, experience: 92 },
+                moves: [
+                    { name: 'Bungee Gum', desc: 'Elastic Nen technique' },
+                    { name: 'Playing Cards', desc: 'Magical card weapons' },
+                    { name: 'Texture Surprise', desc: 'Nen disguise ability' }
+                ],
+                strengths: ['Nen mastery', 'Combat genius', 'Unpredictability', 'Magical abilities'],
+                weaknesses: ['Madness', 'Obsession with strong opponents', 'Emotional instability'],
+                powerSystem: 'Magician with advanced Nen abilities. Hisoka uses bungee gum and playing cards as weapons.',
+                battleVerdicts: {}
+            },
+            {
+                id: 22,
+                name: 'Kakashi Hatake',
+                anime: 'Naruto',
+                animeFilter: 'naruto',
+                tier: 'S-Tier',
+                age: 31,
+                alias: 'Copy Ninja Kakashi, Sharingan User',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/kakashi_hatake_portrait-B3U6ZyeeZCVQrAGoaLw5EC.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/kakashi_sharingan_attack-T8mQBGqpBH7JCXZ2UDUWCt.webp',
+                stats: { power: 88, speed: 90, intelligence: 92, durability: 85, technique: 95, experience: 98 },
+                moves: [
+                    { name: 'Raikiri', desc: 'Lightning blade technique' },
+                    { name: 'Sharingan', desc: 'Copied eye power' },
+                    { name: 'Kamui', desc: 'Space-time jutsu' }
+                ],
+                strengths: ['Sharingan mastery', 'Jutsu copying', 'Experience', 'Strategic mind'],
+                weaknesses: ['Sharingan drain', 'Humanity', 'Emotional trauma'],
+                powerSystem: 'Ninja with Sharingan eye. Kakashi uses lightning jutsu and can copy any technique.',
+                battleVerdicts: {
+                    'Sasuke': 'Kakashi wins - Superior experience'
+                }
+            },
+            {
+                id: 23,
+                name: 'Sasuke Uchiha',
+                anime: 'Naruto',
+                animeFilter: 'naruto',
+                tier: 'S-Tier',
+                age: 17,
+                alias: 'Uchiha Prodigy, Avenger',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/sasuke_uchiha_portrait-Kt4AemHMPorUGi4PtkkxHZ.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/sasuke_chidori_attack-PL3WQ4VpKw2Xx3WEr8phjw.webp',
+                stats: { power: 90, speed: 92, intelligence: 88, durability: 85, technique: 93, experience: 85 },
+                moves: [
+                    { name: 'Chidori', desc: 'Lightning spear jutsu' },
+                    { name: 'Mangekyo Sharingan', desc: 'Ultimate eye power' },
+                    { name: 'Susanoo', desc: 'Spiritual warrior' }
+                ],
+                strengths: ['Sharingan power', 'Lightning jutsu', 'Talent', 'Determination'],
+                weaknesses: ['Revenge obsession', 'Emotional instability', 'Pride'],
+                powerSystem: 'Uchiha clan member with Sharingan. Sasuke uses lightning jutsu and eye techniques.',
+                battleVerdicts: {
+                    'Naruto': 'Sasuke wins - Equal power',
+                    'Kakashi': 'Kakashi wins - Experience advantage'
+                }
+            },
+            {
+                id: 24,
+                name: 'Itachi Uchiha',
+                anime: 'Naruto',
+                animeFilter: 'naruto',
+                tier: 'S-Tier',
+                age: 21,
+                alias: 'Uchiha Genius, Akatsuki Member',
+                status: 'Deceased',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/itachi_uchiha_portrait-9Qo49Q4dpa7KjBmcRvoQkg.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/itachi_amaterasu_attack-n9MrK5mjLWXVknsudcNEcF.webp',
+                stats: { power: 92, speed: 91, intelligence: 95, durability: 88, technique: 96, experience: 92 },
+                moves: [
+                    { name: 'Amaterasu', desc: 'Black flame jutsu' },
+                    { name: 'Tsukuyomi', desc: 'Genjutsu illusion' },
+                    { name: 'Susanoo', desc: 'Perfect warrior form' }
+                ],
+                strengths: ['Genjutsu mastery', 'Amaterasu', 'Intellect', 'Experience'],
+                weaknesses: ['Illness', 'Humanity', 'Emotional burden'],
+                powerSystem: 'Uchiha prodigy with Mangekyo Sharingan. Itachi uses genjutsu and black flame jutsu.',
+                battleVerdicts: {
+                    'Sasuke': 'Itachi wins - Superior power',
+                    'Kakashi': 'Itachi wins - Genjutsu advantage'
+                }
+            },
+            {
+                id: 25,
+                name: 'Zoro',
+                anime: 'One Piece',
+                animeFilter: 'one-piece',
+                tier: 'S-Tier',
+                age: 21,
+                alias: 'Swordsman, Pirate Hunter',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/zoro_portrait-CV6zWhhq7TT3BrZyqDtUa7.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/zoro_three_sword_attack-38PjDZK8MGJqxcYmD2yQ2S.webp',
+                stats: { power: 92, speed: 88, intelligence: 75, durability: 90, technique: 94, experience: 88 },
+                moves: [
+                    { name: 'Three Sword Style', desc: 'Tri-blade technique' },
+                    { name: 'Conqueror\'s Haki', desc: 'Willpower manifestation' },
+                    { name: 'Asura', desc: 'Demon transformation' }
+                ],
+                strengths: ['Sword mastery', 'Haki control', 'Durability', 'Determination'],
+                weaknesses: ['Navigation inability', 'Humanity', 'Emotional attachment'],
+                powerSystem: 'Swordsman using three blades and Haki. Zoro channels willpower into devastating sword attacks.',
+                battleVerdicts: {
+                    'Nami': 'Zoro wins - Superior combat power',
+                    'Luffy': 'Luffy wins - Rubber advantage'
+                }
+            },
+            {
+                id: 26,
+                name: 'Nami',
+                anime: 'One Piece',
+                animeFilter: 'one-piece',
+                tier: 'A-Tier',
+                age: 20,
+                alias: 'Navigator, Cartographer',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/nami_portrait-Hi2vSB5HYy96vbz2v4KadA.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/nami_weather_attack-3P3gXw5AKKp4mjWdx52yYT.webp',
+                stats: { power: 75, speed: 82, intelligence: 90, durability: 70, technique: 85, experience: 82 },
+                moves: [
+                    { name: 'Weather Manipulation', desc: 'Climate control staff' },
+                    { name: 'Lightning Attack', desc: 'Electrical discharge' },
+                    { name: 'Navigation', desc: 'Strategic planning' }
+                ],
+                strengths: ['Weather control', 'Intelligence', 'Navigation', 'Cunning'],
+                weaknesses: ['Physical fragility', 'Greed', 'Humanity'],
+                powerSystem: 'Navigator with weather staff. Nami manipulates climate for combat and navigation.',
+                battleVerdicts: {}
+            },
+            {
+                id: 27,
+                name: 'Sanji',
+                anime: 'One Piece',
+                animeFilter: 'one-piece',
+                tier: 'A-Tier',
+                age: 21,
+                alias: 'Cook, Leg Master',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/sanji_portrait-He5CjrGpu9s8A7dkYgevx2.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/sanji_kick_attack-NvUkn3nKJCmtEUJNakRCEX.webp',
+                stats: { power: 85, speed: 90, intelligence: 80, durability: 82, technique: 88, experience: 85 },
+                moves: [
+                    { name: 'Leg Techniques', desc: 'Powerful kick attacks' },
+                    { name: 'Diable Jambe', desc: 'Flaming leg technique' },
+                    { name: 'Haki', desc: 'Willpower manifestation' }
+                ],
+                strengths: ['Leg mastery', 'Speed', 'Haki control', 'Cooking'],
+                weaknesses: ['Women distraction', 'Humanity', 'Emotional attachment'],
+                powerSystem: 'Cook with powerful leg techniques and Haki. Sanji uses flaming kicks and speed.',
+                battleVerdicts: {}
+            },
+            {
+                id: 28,
+                name: 'Usopp',
+                anime: 'One Piece',
+                animeFilter: 'one-piece',
+                tier: 'B-Tier',
+                age: 19,
+                alias: 'Sniper, Storyteller',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/usopp_portrait-VBXfetD8FEPz23SdXJu.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/usopp_sniper_attack-dFnUoGHoXNkoUHENF6K9UF.webp',
+                stats: { power: 70, speed: 80, intelligence: 85, durability: 65, technique: 88, experience: 80 },
+                moves: [
+                    { name: 'Sniper Mastery', desc: 'Long-range accuracy' },
+                    { name: 'Pop Greens', desc: 'Plant-based weapons' },
+                    { name: 'Observation Haki', desc: 'Future sight' }
+                ],
+                strengths: ['Marksmanship', 'Creativity', 'Courage', 'Observation'],
+                weaknesses: ['Physical fragility', 'Cowardice', 'Humanity'],
+                powerSystem: 'Sniper with creative weapons. Usopp uses marksmanship and plant-based ammunition.',
+                battleVerdicts: {}
+            },
+            {
+                id: 29,
+                name: 'Astro Boy',
+                anime: 'Astro Boy',
+                animeFilter: 'other',
+                tier: 'S-Tier',
+                age: 10,
+                alias: 'Mighty Atom, Robot Hero',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/astro_boy_portrait-BLHdb3tgh4sHTRDz6aZJHu.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/astro_boy_laser_attack-iVYbFpc3zDGoE8kX5o2yqe.webp',
+                stats: { power: 95, speed: 94, intelligence: 85, durability: 98, technique: 90, experience: 88 },
+                moves: [
+                    { name: 'Laser Eyes', desc: 'Powerful eye beam' },
+                    { name: 'Flight', desc: 'Jet-powered movement' },
+                    { name: 'Super Strength', desc: 'Robot power' }
+                ],
+                strengths: ['Robot durability', 'Laser power', 'Flight', 'Strength'],
+                weaknesses: ['Electricity vulnerability', 'Programming limits', 'Emotion simulation'],
+                powerSystem: 'Powerful robot with advanced technology. Astro Boy uses lasers and super strength.',
+                battleVerdicts: {}
+            },
+            {
+                id: 30,
+                name: 'Doraemon',
+                anime: 'Doraemon',
+                animeFilter: 'other',
+                tier: 'S-Tier',
+                age: 100,
+                alias: 'Robot Cat, Time Traveler',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/doraemon_portrait-CgJWJfJP8ij2KD7FXaTxky.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/doraemon_gadget_attack-KWrNcsjpVLBbrxKkMPPhVE.webp',
+                stats: { power: 90, speed: 85, intelligence: 99, durability: 95, technique: 98, experience: 99 },
+                moves: [
+                    { name: 'Gadgets', desc: 'Magical tools from future' },
+                    { name: 'Time Travel', desc: 'Temporal manipulation' },
+                    { name: 'Anywhere Door', desc: 'Spatial teleportation' }
+                ],
+                strengths: ['Future technology', 'Gadgets', 'Time manipulation', 'Intelligence'],
+                weaknesses: ['Mice fear', 'Humanity', 'Emotional attachment'],
+                powerSystem: 'Robot cat with future gadgets. Doraemon uses advanced technology and time travel.',
+                battleVerdicts: {}
+            },
+            {
+                id: 31,
+                name: 'Totoro',
+                anime: 'My Neighbor Totoro',
+                animeFilter: 'other',
+                tier: 'S-Tier',
+                age: 1000,
+                alias: 'Forest Spirit, Guardian',
+                status: 'Alive',
+                portrait: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/totoro_portrait-ngkBKJGgR3GkbKqwvaajjS.webp',
+                powerDisplay: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663760105736/J3Vtfr8aV5oBhsFaiZS4Hh/totoro_forest_attack-ngkBKJGgR3GkbKqwvaajjS.webp',
+                stats: { power: 92, speed: 80, intelligence: 90, durability: 98, technique: 88, experience: 99 },
+                moves: [
+                    { name: 'Forest Magic', desc: 'Nature manipulation' },
+                    { name: 'Spiritual Power', desc: 'Mystical energy' },
+                    { name: 'Protection', desc: 'Guardian ability' }
+                ],
+                strengths: ['Spiritual power', 'Nature control', 'Immortality', 'Wisdom'],
+                weaknesses: ['Limited combat', 'Peaceful nature', 'Spiritual realm bound'],
+                powerSystem: 'Forest spirit with magical powers. Totoro manipulates nature and spiritual energy.',
+                battleVerdicts: {}
+            }
+        ];
+
+        let displayedCount = 12;
+        let filteredCharacters = [...characters];
+        let currentFilter = 'all';
+
+        // Initialize
+        function init() {
+            populateDropdowns();
+            renderCharacters();
+            renderTierList();
+            setupEventListeners();
+        }
+
+        function populateDropdowns() {
+            const fighter1 = document.getElementById('fighter1');
+            const fighter2 = document.getElementById('fighter2');
+            characters.forEach(char => {
+                const option1 = document.createElement('option');
+                option1.value = char.id;
+                option1.textContent = `${char.name} (${char.anime})`;
+                fighter1.appendChild(option1);
+
+                const option2 = document.createElement('option');
+                option2.value = char.id;
+                option2.textContent = `${char.name} (${char.anime})`;
+                fighter2.appendChild(option2);
+            });
+        }
+
+        function renderCharacters() {
+            const grid = document.getElementById('charactersGrid');
+            grid.innerHTML = '';
+            
+            filteredCharacters.slice(0, displayedCount).forEach(char => {
+                const card = document.createElement('div');
+                card.className = 'character-card';
+                card.innerHTML = `
+                    <img src="${char.portrait}" alt="${char.name}" class="character-portrait" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22280%22 height=%22250%22%3E%3Crect fill=%22%23333%22 width=%22280%22 height=%22250%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2220%22%3E${char.name}%3C/text%3E%3C/svg%3E'">
+                    <div class="character-name">${char.name}</div>
+                    <div class="character-anime">${char.anime}</div>
+                    <div class="tier-badge">${char.tier}</div>
+                    <div class="stats-container">
+                        <div class="stat-bar">
+                            <div class="stat-label"><span>Power</span><span>${char.stats.power}</span></div>
+                            <div class="stat-fill"><div class="stat-progress" style="width: ${char.stats.power}%"></div></div>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-label"><span>Speed</span><span>${char.stats.speed}</span></div>
+                            <div class="stat-fill"><div class="stat-progress" style="width: ${char.stats.speed}%"></div></div>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-label"><span>Intelligence</span><span>${char.stats.intelligence}</span></div>
+                            <div class="stat-fill"><div class="stat-progress" style="width: ${char.stats.intelligence}%"></div></div>
+                        </div>
+                    </div>
+                    <button class="analyze-btn" onclick="openModal(${char.id})">Analyze Power →</button>
+                `;
+                grid.appendChild(card);
+            });
+
+            updateCharactersCount();
+        }
+
+        function updateCharactersCount() {
+            const count = document.getElementById('charactersCount');
+            count.textContent = `Showing ${Math.min(displayedCount, filteredCharacters.length)} of ${filteredCharacters.length} characters`;
+        }
+
+        function renderTierList() {
+            const tierList = document.getElementById('tierList');
+            tierList.innerHTML = '';
+
+            const categories = [
+                { title: 'Top 5 Strongest', sort: (a, b) => b.stats.power - a.stats.power },
+                { title: 'Top 5 Fastest', sort: (a, b) => b.stats.speed - a.stats.speed },
+                { title: 'Top 5 Smartest', sort: (a, b) => b.stats.intelligence - a.stats.intelligence }
+            ];
+
+            categories.forEach(cat => {
+                const sorted = [...characters].sort(cat.sort).slice(0, 5);
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'tier-category';
+                categoryDiv.innerHTML = `<div class="tier-category-title">${cat.title}</div>`;
+                
+                sorted.forEach((char, idx) => {
+                    const item = document.createElement('div');
+                    item.className = 'tier-item';
+                    item.innerHTML = `<span class="tier-rank">#${idx + 1}</span>${char.name}`;
+                    categoryDiv.appendChild(item);
+                });
+                
+                tierList.appendChild(categoryDiv);
+            });
+        }
+
+        function openModal(charId) {
+            const char = characters.find(c => c.id === charId);
+            if (!char) return;
+
+            document.getElementById('modalPortrait').src = char.portrait;
+            document.getElementById('modalName').textContent = char.name;
+            document.getElementById('modalAnime').textContent = char.anime;
+            document.getElementById('modalBasicInfo').innerHTML = `
+                <p><strong>Age:</strong> ${char.age}</p>
+                <p><strong>Alias:</strong> ${char.alias}</p>
+                <p><strong>Status:</strong> ${char.status}</p>
+            `;
+
+            // Stats Grid
+            const statsGrid = document.getElementById('statsGrid');
+            statsGrid.innerHTML = '';
+            Object.entries(char.stats).forEach(([key, value]) => {
+                const statCard = document.createElement('div');
+                statCard.className = 'stat-card';
+                statCard.innerHTML = `
+                    <div class="stat-card-label">${key}</div>
+                    <div class="stat-card-value">${value}</div>
+                `;
+                statsGrid.appendChild(statCard);
+            });
+
+            // Moves Gallery
+            const movesGallery = document.getElementById('movesGallery');
+            movesGallery.innerHTML = '';
+            char.moves.forEach(move => {
+                const moveCard = document.createElement('div');
+                moveCard.className = 'move-card';
+                moveCard.innerHTML = `
+                    <div class="move-name">${move.name}</div>
+                    <div class="move-description">${move.desc}</div>
+                `;
+                movesGallery.appendChild(moveCard);
+            });
+
+            // Power Display
+            document.getElementById('powerDisplay').src = char.powerDisplay;
+
+            // Pros/Cons
+            const prosList = document.getElementById('prosList');
+            prosList.innerHTML = '';
+            char.strengths.forEach(strength => {
+                const li = document.createElement('li');
+                li.textContent = strength;
+                prosList.appendChild(li);
+            });
+
+            const consList = document.getElementById('consList');
+            consList.innerHTML = '';
+            char.weaknesses.forEach(weakness => {
+                const li = document.createElement('li');
+                li.textContent = weakness;
+                consList.appendChild(li);
+            });
+
+            // Power System
+            document.getElementById('powerSystemDesc').textContent = char.powerSystem;
+
+            // Show modal
+            document.getElementById('characterModal').classList.add('show');
+        }
+
+        function setupEventListeners() {
+            // Search
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                filteredCharacters = characters.filter(char => 
+                    char.name.toLowerCase().includes(query) &&
+                    (currentFilter === 'all' || char.animeFilter === currentFilter)
+                );
+                displayedCount = 12;
+                renderCharacters();
+            });
+
+            // Filters
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    
+                    const query = document.getElementById('searchInput').value.toLowerCase();
+                    filteredCharacters = characters.filter(char => 
+                        char.name.toLowerCase().includes(query) &&
+                        (currentFilter === 'all' || char.animeFilter === currentFilter)
+                    );
+                    displayedCount = 12;
+                    renderCharacters();
+                });
+            });
+
+            // Load More
+            document.getElementById('loadMoreBtn').addEventListener('click', () => {
+                displayedCount += 6;
+                if (displayedCount >= filteredCharacters.length) {
+                    document.getElementById('loadMoreBtn').disabled = true;
+                }
+                renderCharacters();
+            });
+
+            // Fight Button
+            document.getElementById('fightBtn').addEventListener('click', () => {
+                const fighter1Id = parseInt(document.getElementById('fighter1').value);
+                const fighter2Id = parseInt(document.getElementById('fighter2').value);
+                
+                if (!fighter1Id || !fighter2Id) {
+                    alert('Please select both fighters!');
+                    return;
+                }
+
+                const char1 = characters.find(c => c.id === fighter1Id);
+                const char2 = characters.find(c => c.id === fighter2Id);
+
+                const verdict = generateBattleVerdict(char1, char2);
+                displayBattleResult(char1, char2, verdict);
+            });
+
+            // Tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.getElementById(btn.dataset.tab).classList.add('active');
+                });
+            });
+
+            // Close Modal
+            document.getElementById('closeModal').addEventListener('click', () => {
+                document.getElementById('characterModal').classList.remove('show');
+            });
+
+            window.addEventListener('click', (e) => {
+                const modal = document.getElementById('characterModal');
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                }
+            });
+        }
+
+        function generateBattleVerdict(char1, char2) {
+            const power1 = char1.stats.power + char1.stats.speed + char1.stats.technique;
+            const power2 = char2.stats.power + char2.stats.speed + char2.stats.technique;
+            
+            let winner, verdict;
+            if (power1 > power2) {
+                winner = char1.name;
+                verdict = `${char1.name} wins! Superior power and technique give ${char1.name} the edge.`;
+            } else if (power2 > power1) {
+                winner = char2.name;
+                verdict = `${char2.name} wins! Better speed and strategy lead to victory.`;
+            } else {
+                winner = 'Draw';
+                verdict = 'It\'s a tie! Both fighters are evenly matched in this battle.';
+            }
+            
+            return { winner, verdict };
+        }
+
+        function displayBattleResult(char1, char2, verdict) {
+            const result = document.getElementById('battleResult');
+            result.innerHTML = `
+                <h3 style="color: #ff0080; margin-bottom: 15px; text-transform: uppercase;">⚡ BATTLE ANALYSIS ⚡</h3>
+                <table class="battle-table">
+                    <tr>
+                        <th>Stat</th>
+                        <th>${char1.name}</th>
+                        <th>${char2.name}</th>
+                    </tr>
+                    <tr>
+                        <td>Power</td>
+                        <td>${char1.stats.power}</td>
+                        <td>${char2.stats.power}</td>
+                    </tr>
+                    <tr>
+                        <td>Speed</td>
+                        <td>${char1.stats.speed}</td>
+                        <td>${char2.stats.speed}</td>
+                    </tr>
+                    <tr>
+                        <td>Intelligence</td>
+                        <td>${char1.stats.intelligence}</td>
+                        <td>${char2.stats.intelligence}</td>
+                    </tr>
+                    <tr>
+                        <td>Durability</td>
+                        <td>${char1.stats.durability}</td>
+                        <td>${char2.stats.durability}</td>
+                    </tr>
+                    <tr>
+                        <td>Technique</td>
+                        <td>${char1.stats.technique}</td>
+                        <td>${char2.stats.technique}</td>
+                    </tr>
+                </table>
+                <div class="battle-verdict">
+                    <strong>🏆 VERDICT:</strong> ${verdict.verdict}
+                </div>
+            `;
+            result.classList.add('show');
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
